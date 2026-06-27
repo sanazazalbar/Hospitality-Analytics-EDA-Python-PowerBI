@@ -1,111 +1,108 @@
 # 🏨 Hotel Hospitality Data Analysis
+**Python (EDA + Data Cleaning) | Power BI Dashboard**
 
-A full-cycle data analytics project on hotel booking and guest data — covering data cleaning, exploratory analysis, and interactive visualization via a Power BI dashboard.
+A full-cycle data analytics project on hotel booking data — 
+covering data cleaning, exploratory data analysis, and an 
+interactive 4-page Power BI dashboard.
 
 ---
 
 ## 📁 Project Structure
-
-```
 ├── hospitality.xlsx              # Raw dataset
 ├── FinalProject.ipynb            # Data cleaning notebook
 ├── FinalProjectAnalysis.ipynb    # EDA & visualization notebook
-├── hotel.pbix                    # Power BI dashboard
-└── README.md
-```
+└── hotel.pbix                    # Power BI dashboard (4 pages)
 
 ---
 
-## 📊 Dataset Overview
+## 📊 Dataset — Real Numbers
+- **1,080 hotel bookings | 27 columns**
+- **6 cities:** Bangalore, Hyderabad, Pune, Goa, Delhi, Mumbai
+- **3 room types:** Standard, Deluxe, Suite
+- **4 booking channels:** Website, Agent, OTA, Direct
+- **4 services:** SPA, Room Service, Tour, Breakfast
 
-The raw dataset (`hospitality.xlsx`) contains hotel booking records with the following fields:
+---
 
-| Column | Description |
+## 🔧 Phase 1 — Data Cleaning (FinalProject.ipynb)
+
+**Missing values treated across 8 columns:**
+
+| Column | Missing | Treatment |
+|---|---|---|
+| Service Used | 145 | Filled with "No Service" |
+| Guest Rating | 73 | Filled with column mean |
+| Room Type | 35 | Filled with "Standard" |
+| Guest Name | 34 | Filled with default |
+| Location | 32 | Filled with "Unknown" |
+| Room Rate / Revenue / Cost | 50 each | Mean/median/derived |
+
+**Text standardization across 5 columns:**
+- Room Type: 10 inconsistent values → 3 clean categories
+- Service Used: 7 variants → 4 clean categories
+- Booking Channel: 5 variants → 4 clean categories
+- Status: 4 variants → 3 clean categories
+- Guest Name: title-cased
+
+**Feature Engineering:**
+- Derived `Total Revenue` = Room Rate × Nights Stayed
+- Derived `Profit` = Total Revenue − Operating Cost
+- Added `Review Category` using pd.cut() on Guest Rating
+- Added `Month`, `Year`, `Weekday` columns
+
+---
+
+## 📈 Phase 2 — EDA & Analysis (FinalProjectAnalysis.ipynb)
+
+### 📌 KPIs
+| Metric | Value |
 |---|---|
-| Booking ID / Guest ID | Unique identifiers |
-| Guest Name, Age, Gender, Country | Guest demographics |
-| Room Type | Standard, Deluxe, Suite |
-| Service Used | SPA, Room Service, Tour, etc. |
-| Location | Bangalore, Hyderabad, Pune, Goa, etc. |
-| Booking Channel | Agent, OTA, Website, Direct |
-| Status | Confirmed, Pending, Cancelled |
-| Check In / Check Out Date | Stay dates |
-| Night Stays | Duration of stay |
-| Guest Rating / Room Rate | Ratings and room pricing |
-| Total Revenue / Operating Cost / Profit | Financial metrics |
-| Purpose of Visit | Business, Leisure, Family |
-| Guest Type | New / Returning |
-| Payment Method | UPI, Cash, Credit/Debit Card |
-| Review Category | Poor, Average, Good, Excellent |
+| Total Bookings | **1,080** |
+| Total Revenue | **₹7,84,211** |
+| Avg Revenue per Booking | **₹726** |
+| Average Guest Rating | **3.68 / 5** |
+| Average Room Rate | **₹186.1/night** |
+
+### 📌 Booking Status
+| Status | Count | % |
+|---|---|---|
+| Confirmed | 532 | 49.3% |
+| Pending | 281 | 26.0% |
+| Cancelled | 267 | 24.7% |
+
+### 📌 Revenue by City (Top → Bottom)
+| City | Revenue |
+|---|---|
+| Pune | ₹1,39,971 |
+| Delhi | ₹1,32,923 |
+| Bangalore | ₹1,29,084 |
+| Hyderabad | ₹1,25,223 |
+| Mumbai | ₹1,22,807 |
+| Goa | ₹1,09,717 |
+
+### 📌 Revenue by Room Type
+| Room Type | Revenue |
+|---|---|
+| Deluxe | ₹2,71,334 |
+| Standard | ₹2,59,083 |
+| Suite | ₹2,31,881 |
+
+### 📌 Top Booking Channel
+Website — 439 bookings (40.6%)
+
+### 📌 Most Used Service
+SPA — 317 bookings | Room Service — 307
+
+### 📌 Peak Booking Day
+Wednesday (178) followed by Thursday (172)
+
+### 📌 Outlier Detection
+8 revenue outliers detected using IQR method
+
+### Visualizations Created (8 charts)
+Bar chart, Pie chart, Line chart, Bar chart,
+Histogram, Boxplot, Bar chart, Bar chart
 
 ---
 
-## 🔧 Phase 1 — Data Cleaning (`FinalProject.ipynb`)
-
-Key cleaning steps performed:
-
-- Removed duplicate records
-- Standardized text fields (Guest Name, Room Type, Service Used, Booking Channel, Status)
-- Handled missing values:
-  - **Guest Rating & Room Rate** → filled with column mean
-  - **Total Revenue** → derived from Room Rate × Nights Stayed
-  - **Operating Cost** → filled with median
-  - **Profit** → recalculated as Total Revenue − Operating Cost
-  - **Room Type, Location, Service Used, Guest Name** → filled with meaningful defaults
-- Added a **Review Category** column using `pd.cut()` on Guest Rating bins
-- Exported cleaned data to `hospitality_cleaned_dataset.csv`
-
----
-
-## 📈 Phase 2 — Analysis & Visualization (`FinalProjectAnalysis.ipynb`)
-
-Key analyses performed:
-
-- **KPIs:** Total bookings, total revenue, average guest rating, average room rate
-- **Revenue by Location** — bar chart
-- **Booking Status Distribution** — pie chart
-- **Monthly Revenue Trend** — line chart
-- **Bookings by Room Type** — bar chart
-- **Guest Rating Distribution** — histogram
-- **Revenue Outlier Detection** — boxplot + IQR method
-- Breakdowns by booking channel, service used, day of week, and guest country
-
-New columns derived during analysis: `Month`, `Year`, `Weekday`
-
-Final cleaned dataset exported to `hospitality_final_dataset.csv`
-
----
-
-## 📊 Phase 3 — Power BI Dashboard (`hotel.pbix`)
-
-An interactive Power BI dashboard built on the final cleaned dataset, enabling:
-
-- Revenue and profit exploration by location, room type, and time period
-- Guest satisfaction analysis by review category
-- Booking channel and payment method breakdowns
-- Filtering by status, guest type, and purpose of visit
-
----
-
-## 📸 Dashboard Preview
-![Dashboard](https://github.com/sanazazalbar/Hospitality-Analytics-Dashboard/blob/c2dfa87fb4596a7897c115ff13eb7dfa5d05caba/executive.jpg)
-![Dashboard](https://github.com/sanazazalbar/Hospitality-Analytics-Dashboard/blob/c2dfa87fb4596a7897c115ff13eb7dfa5d05caba/Operations.jpg)
-![Dashboard](https://github.com/sanazazalbar/Hospitality-Analytics-Dashboard/blob/c2dfa87fb4596a7897c115ff13eb7dfa5d05caba/GuestAnalytics.jpg)
-![Dashboard](https://github.com/sanazazalbar/Hospitality-Analytics-Dashboard/blob/c2dfa87fb4596a7897c115ff13eb7dfa5d05caba/Financial.jpg)
-
-
-## 🛠️ Tech Stack
-
-- **Python** (pandas, matplotlib, numpy)
-- **Jupyter Notebook**
-- **Microsoft Power BI**
-- **Microsoft Excel**
-
----
-
-## 🚀 Getting Started
-
-1. Clone this repository
-2. Open `FinalProject.ipynb` and run all cells to generate the cleaned dataset
-3. Open `FinalProjectAnalysis.ipynb` to explore the analysis and charts
-4. Open `hotel.pbix` in Power BI Desktop to interact with the dashboard
+## 📊 Phase 3 — Power BI
